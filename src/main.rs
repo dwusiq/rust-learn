@@ -1,4 +1,7 @@
+use std::cmp::Ordering;
+
 fn main() {
+    slice_method();
     // mut_reference_method();
     // imut_reference_method();
     // while_method();
@@ -6,8 +9,33 @@ fn main() {
     // for_method();
     // if_method();
     // tup_method();
-    array_method();
+    // array_method();
+    // match_method();
 }
+
+//切片
+fn slice_method(){
+ //支持字符串字面值参数
+ let a = "Hello World";
+ let a1 = slice_method_01(a);
+
+ //支持字符串类型参数
+ let b = String::from("Hello World");
+ let b1 = slice_method_01(&b);
+
+ println!("空格之后的值，a1:{} b1:{}",a1,b1);
+}
+
+fn slice_method_01(s:&str)-> &str{
+    let b = s.as_bytes();
+    for (i,&v) in b.iter().enumerate(){
+        if v == b' ' {
+            return &s[i..];//获取字符串的切片
+        }
+    }
+    return &s[..]//获取字符串的切片
+}
+
 
 //函数调用时，传递可变引用
 fn mut_reference_method() {
@@ -103,4 +131,25 @@ fn array_method() {
         a.first().expect("not exist"),
         a[2]
     );
+}
+
+
+//match
+fn match_method() {
+     //案例一
+     let target = 50;
+     let input_num = 50;
+     match input_num.cmp(&target) {
+         Ordering::Less => println!("猜的结果太小了"),
+         Ordering::Greater => println!("猜的结果太大了"),
+         Ordering::Equal => println!("你猜对了！！")
+     }
+ 
+     //案例二：
+     let a = String::from("25");
+     let b:u32 =  match  a.parse() {
+         Ok(num) => num,
+         Err(_) => 0,
+     };
+     println!("b:{}",b)
 }
